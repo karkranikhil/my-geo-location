@@ -5,6 +5,7 @@ import PinIcon from './PinIcon'
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import Blog from './Blog'
 import Context from '../context'
 const INITIAL_VIEWPORT ={
   latitude:-37.815868,
@@ -74,6 +75,7 @@ const Map = ({ classes }) => {
       </Marker>
     )}
   </ReactMapGL>
+  <Blog/>
   </div>)
 };
 
