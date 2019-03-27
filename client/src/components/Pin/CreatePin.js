@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import {GraphQLClient} from 'graphql-request'
 import axios from "axios"
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -9,13 +10,14 @@ import LandscapeIcon from "@material-ui/icons/LandscapeOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
 import Context from '../../context'
-
+import {CREATE_PIN_MUTATION} from '../../graphql/mutations'
 
 const CreatePin = ({ classes }) => {
-  const{dispatch} = useContext(Context)
+  const{state, dispatch} = useContext(Context)
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [content,setContent]= useState("")
+  const [submitting,setSubmitting]= useState(false)
 
   const handleImageUpload = async()=>{
     const data = new FormData()
@@ -30,8 +32,24 @@ const CreatePin = ({ classes }) => {
   }
   const handleSubmit = async event =>{
     event.preventDefault()
-    const url = await handleImageUpload()
-    console.log({title, image, url, content})
+    try{
+      setSubmitting(true)
+      const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+      const client = new GraphQLClient('http://localhost:4000/graphql',{
+        headers:{authorization:idToken}
+      })
+      const url = await handleImageUpload()
+      const {latitude, longitude} = state.draft
+      const variables = {
+        title, image:url, content, latitude, longitude
+      }
+      const {createPin}= await client.request(CREATE_PIN_MUTATION, variables)
+      console.log('createPin', {createPin})
+      handleDeleteDraft()
+      } catch(err){
+        setSubmitting(false)
+        console.error('Error submitting', err)
+      }
   }
   const handleDeleteDraft = event =>{
     setTitle("")
@@ -102,7 +120,7 @@ const CreatePin = ({ classes }) => {
       className={classes.button}
       variant="contained"
       color="secondary"
-      disabled={!title.trim() || !content.trim() || !image}
+      disabled={!title.trim() || !content.trim() || !image || submitting}
       onClick={handleSubmit}
       >
       <SaveIcon className={classes.rightIcon}/>
