@@ -30,6 +30,17 @@ type Comment{
 
 type Query{
     me:User
+    getPins:[Pin!]
+}
+input CreatePinInput{
+    title:String
+    image:String
+    content:String
+    latitude:Float
+    longitude:Float
 }
 
+type Mutation{
+    createPin(input:CreatePinInput!):Pin
+}
 `
