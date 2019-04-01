@@ -30,6 +30,7 @@ type Comment{
 
 type Query{
     me:User
+    getPins:[Pin!]
 }
 input CreatePinInput{
     title:String
@@ -42,5 +43,4 @@ input CreatePinInput{
 type Mutation{
     createPin(input:CreatePinInput!):Pin
 }
-
 `
