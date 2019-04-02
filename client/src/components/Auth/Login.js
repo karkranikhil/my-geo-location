@@ -4,7 +4,6 @@ import {GoogleLogin} from 'react-google-login'
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Context from '../../context'
-import { dark } from "@material-ui/core/styles/createPalette";
 import {ME_QUERY} from '../../graphql/queries'
 import { BASE_URL } from "../../client";
 
@@ -27,6 +26,7 @@ const Login = ({ classes }) => {
   }
   const onFailure=err=>{
     console.error("Error logging in ", err)
+    dispatch({type:"IS_LOGGED_IN",payload:false})
   }
   return (
     <div className={classes.root}>
