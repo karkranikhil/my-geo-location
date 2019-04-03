@@ -22,7 +22,7 @@ const Header = ({ classes }) => {
       variant="h6"
       color="inherit"
       noWrap>
-      My Geolocation
+      Pin my visit
       </Typography>
 
     </div>
