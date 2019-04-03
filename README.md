@@ -1,4 +1,4 @@
-## Pin my visit / my-geo-location
+## Pin my visit
 
 In this project you can use below commands
 
